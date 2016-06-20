@@ -15,9 +15,11 @@ resources:
     branch: develop
     username: {{github_token}}
 
+
 jobs:
 - name: test
   plan:
   - get: develop
     trigger: true
-  - get: version
+  - task: test
+    file: src/ci/test.yml
