@@ -19,7 +19,7 @@ resources:
 jobs:
 - name: test
   plan:
-  - get: develop
-    trigger: true
-  - task: test
-    file: develop/ci/test.yml
+    - get: develop
+      trigger: true
+    - task: test
+      file: develop/ci/test.yml
