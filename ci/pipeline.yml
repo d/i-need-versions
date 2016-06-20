@@ -1,0 +1,23 @@
+resources:
+- name: version
+  type: semver
+  source:
+    driver: git
+    uri: https://github.com/d/demo-version
+    branch: master
+    username: {{github_token}}
+    file: v
+
+- name: develop
+  type: git
+  source:
+    uri: https://github.com/d/i-need-versions
+    branch: develop
+    username: {{github_token}}
+
+jobs:
+- name: test
+  plan:
+  - get: develop
+    trigger: true
+  - get: version
