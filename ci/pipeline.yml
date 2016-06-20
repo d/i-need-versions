@@ -10,11 +10,16 @@ resources:
 
 - name: develop
   type: git
-  source:
+  source: &src
     uri: https://github.com/d/i-need-versions
     branch: develop
     username: {{github_token}}
 
+- name: master
+  type: git
+  source:
+    <<: *src
+    branch: master
 
 jobs:
 - name: test
@@ -23,3 +28,14 @@ jobs:
       trigger: true
     - task: test
       file: develop/ci/test.yml
+
+- name: promote
+  plan:
+    - aggregate:
+      - get: develop
+        trigger: true
+        passed:
+          - test
+      - get: master
+      - get: latest_develop
+        resource: develop
