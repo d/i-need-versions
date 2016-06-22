@@ -66,7 +66,7 @@ jobs:
         only_tag: true
         tag: version/number
         tag_prefix: v
-    - attempts: 4
+    - attempts: 16
       do:
         - get: latest_develop
           resource: develop
