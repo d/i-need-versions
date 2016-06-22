@@ -6,6 +6,7 @@ resources:
     uri: https://github.com/d/demo-version
     branch: master
     username: {{github_token}}
+    password: " "
     file: v
 
 - name: develop
@@ -14,6 +15,7 @@ resources:
     uri: https://github.com/d/i-need-versions
     branch: develop
     username: {{github_token}}
+    password: " "
 
 - name: master
   type: git
@@ -36,6 +38,23 @@ jobs:
         trigger: true
         passed:
           - test
-      - get: master
-      - get: latest_develop
-        resource: develop
+      - put: version
+        params:
+          bump: patch
+
+    - task: bump
+      file: develop/ci/bump.yml
+      output_mapping:
+        output: bumped
+
+    - aggregate:
+      - put: master
+        params:
+          repository: bumped
+          tag: version/number
+          tag_prefix: v
+
+      - put: develop
+        params:
+          repository: bumped
+

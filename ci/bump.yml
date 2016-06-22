@@ -1,0 +1,12 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: radial/busyboxplus
+inputs:
+  - name: version
+  - name: develop
+outputs:
+  - name: output
+run:
+  path: develop/ci/bump.sh
