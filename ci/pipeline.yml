@@ -56,7 +56,7 @@ jobs:
     - task: merge_bump_into_master
       file: develop/ci/merge.yml
       input_mapping:
-        ours: lastest_master
+        ours: latest_master
         theirs: bumped
       output_mapping:
         merged: new_master
