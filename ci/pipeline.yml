@@ -47,11 +47,8 @@ jobs:
       output_mapping:
         output: bumped
 
-    - aggregate:
-      - get: latest_develop
-        resource: develop
-      - get: latest_master
-        resource: master
+    - get: latest_master
+      resource: master
 
     - task: merge_bump_into_master
       file: develop/ci/merge.yml
@@ -60,24 +57,24 @@ jobs:
         theirs: bumped
       output_mapping:
         merged: new_master
-    - aggregate:
-      - put: master
-        params:
-          repository: new_master
-      - task: merge_master_into_develop
-        file: develop/ci/merge.yml
-        input_mapping:
-          ours: latest_develop
-          theirs: new_master
-        output_mapping:
-          merged: new_develop
-    - aggregate:
-      - put: develop
-        params:
-          repository: new_develop
-      - put: master
-        params:
-          repository: bumped
-          only_tag: true
-          tag: version/number
-          tag_prefix: v
+    - put: master
+      params:
+        repository: new_master
+    - put: master
+      params:
+        repository: bumped
+        only_tag: true
+        tag: version/number
+        tag_prefix: v
+    - get: latest_develop
+      resource: develop
+    - task: merge_master_into_develop
+      file: develop/ci/merge.yml
+      input_mapping:
+        ours: latest_develop
+        theirs: new_master
+      output_mapping:
+        merged: new_develop
+    - put: develop
+      params:
+        repository: new_develop
