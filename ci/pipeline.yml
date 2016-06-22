@@ -3,18 +3,18 @@ resources:
   type: semver
   source:
     driver: git
-    uri: https://github.com/d/demo-version
+    uri: git@github.com:d/demo-version
     branch: master
-    username: {{github_token}}
+    private_key: {{demo_version_private_key}}
     password: " "
     file: v
 
 - name: develop
   type: git
   source: &src
-    uri: https://github.com/d/i-need-versions
+    uri: git@github.com:d/i-need-versions
     branch: develop
-    username: {{github_token}}
+    private_key: {{i_need_versions_private_key}}
     password: " "
 
 - name: master
