@@ -1,0 +1,13 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: radial/busyboxplus
+inputs:
+  - name: ours
+  - name: theirs
+outputs:
+  - name: merged
+
+run:
+  path: theirs/ci/merge.sh
