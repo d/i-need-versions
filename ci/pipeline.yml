@@ -66,15 +66,17 @@ jobs:
         only_tag: true
         tag: version/number
         tag_prefix: v
-    - get: latest_develop
-      resource: develop
-    - task: merge_master_into_develop
-      file: develop/ci/merge.yml
-      input_mapping:
-        ours: latest_develop
-        theirs: new_master
-      output_mapping:
-        merged: new_develop
-    - put: develop
-      params:
-        repository: new_develop
+    - attempts: 2
+      do:
+        - get: latest_develop
+          resource: develop
+        - task: merge_master_into_develop
+          file: develop/ci/merge.yml
+          input_mapping:
+            ours: latest_develop
+            theirs: new_master
+          output_mapping:
+            merged: new_develop
+        - put: develop
+          params:
+            repository: new_develop
